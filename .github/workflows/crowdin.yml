@@ -6,9 +6,15 @@ on:
     types: [ closed ]
   workflow_dispatch:
 
+# Cancel superseded PR checks; keep every non-PR invocation independent.
+concurrency:
+  group: crowdin.yml-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   merge_job:
     # this job will only run if the PR has been merged
+    timeout-minutes: 60
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:

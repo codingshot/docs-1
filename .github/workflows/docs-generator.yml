@@ -30,6 +30,7 @@ concurrency:
 
 jobs:
   publish:
+    timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
     - name: Extract vars

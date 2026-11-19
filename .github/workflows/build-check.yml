@@ -10,8 +10,14 @@ on:
     branches:
       - master
 
+# Cancel superseded PR checks; keep every non-PR invocation independent.
+concurrency:
+  group: build-check.yml-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   build-check:
+    timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
